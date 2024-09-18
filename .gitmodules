@@ -1,3 +1,6 @@
 [submodule "ArgentBank-Backend"]
 	path = ArgentBank-Backend
 	url = https://github.com/OpenClassrooms-Student-Center/ArgentBank-Backend.git
+[submodule "ArgentBank-Frontend"]
+	path = ArgentBank-Frontend
+	url = https://github.com/OpenClassrooms-Student-Center/ArgentBank-Frontend.git

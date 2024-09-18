@@ -1,0 +1,3 @@
+[submodule "ArgentBank-Backend"]
+	path = ArgentBank-Backend
+	url = https://github.com/OpenClassrooms-Student-Center/ArgentBank-Backend.git

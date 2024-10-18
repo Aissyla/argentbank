@@ -4,7 +4,7 @@ import './index.css';
 import App from './App';
 import { Provider } from "react-redux"; // Importation du `Provider` de React-Redux pour connecter Redux à React
 import { PersistGate } from 'redux-persist/integration/react';
-import { store, persistor } from './Redux/oldStore'; // Importez le store et persistor pour gérer l'état global
+import { store, persistor } from './Redux/store'; // Importez le store et persistor pour gérer l'état global
 
 // Création de la racine React sur l'élément du DOM avec l'id `root`
 const root = ReactDOM.createRoot(document.getElementById('root'));

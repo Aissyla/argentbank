@@ -1,0 +1,17 @@
+[
+    {
+        "email": "tony@stark.com",
+        "password": "$2b$12$oqx.ou5oXk6183Es8k8J9uiSZlGxiIpnnhsbvN/Txu.Y06.AUhqxu",
+        "firstName": "Tony",
+        "lastName": "Stark",
+        "userName": "Iron"
+    },
+    {
+        "email": "steve@rogers.com",
+        "password": "$2b$12$ugWTT6oPP84Pnfv.0915rOBe1j1aMZ1p8jS7k9vMRE6c1O2s/6Aqe",
+        "firstName": "Steve",
+        "lastName": "Rogers",
+        "userName": "Captain"
+    }
+]
+

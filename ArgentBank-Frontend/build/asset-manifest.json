@@ -1,0 +1,14 @@
+{
+  "files": {
+    "main.css": "/static/css/main.969dc1ee.css",
+    "main.js": "/static/js/main.fa8d1c11.js",
+    "static/media/bank-tree.webp": "/static/media/bank-tree.efcfe5893d3a6be4299d.webp",
+    "index.html": "/index.html",
+    "main.969dc1ee.css.map": "/static/css/main.969dc1ee.css.map",
+    "main.fa8d1c11.js.map": "/static/js/main.fa8d1c11.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.969dc1ee.css",
+    "static/js/main.fa8d1c11.js"
+  ]
+}

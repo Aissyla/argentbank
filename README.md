@@ -1,1 +1,1 @@
-https://argentbankv2.vercel.app/HomePage
+https://argentbankv2.vercel.app

@@ -340,6 +340,27 @@ form div label input {
     color: #fff;
 }
 
+.error-page {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.text-404 {
+    font-weight: normal;
+}
+
+.button-404 {
+    background-color: #60b27b;
+    border: none;
+    border-radius: 5px;
+    color: #fff;
+    padding: 15px 40px 15px 40px;
+    margin-right: 10px;
+    cursor: pointer;
+}
+
 @media (min-width: 720px) {
     .account {
         flex-direction: row;

@@ -1,11 +1,10 @@
 {
-    "projects": [
-        {
-            "src": "ArgentBank-Frontend/",
-            "use": "@vercel/static-build",
-            "config": {
-                "distDir": "build"
-            }
-        }
+    "version": 2,
+    "builds": [
+      { "src": "ArgentBank-Frontend/package.json", "use": "@vercel/static-build" }
+    ],
+    "routes": [
+      { "src": "/(.*)", "dest": "/index.html" }
     ]
-}  
+  }
+  

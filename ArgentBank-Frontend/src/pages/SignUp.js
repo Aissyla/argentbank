@@ -12,7 +12,6 @@ function SignUp() {
    // Déclaration des états locaux pour gérer le nom d'utilisateur et le mot de passe
    const [username, setUsername] = useState(''); // État pour stocker le nom d'utilisateur
    const [password, setPassword] = useState(''); // État pour stocker le mot de passe
-
    const [rememberMe, setRememberMe] = useState(false); // Nouvel état pour gérer "Remember Me"
 
    // Initialisation de useDispatch pour envoyer des actions Redux
@@ -29,15 +28,24 @@ function SignUp() {
       dispatch(clearError());
     }, [dispatch]);
 
-   // Fonction appelée lors de la soumission du formulaire de connexion
-   const handleSubmit = (e) => {
-    e.preventDefault(); // Empêche le rechargement de la page
-    dispatch(login({ username, password })); // Envoie l'action login avec les identifiants saisis
-    // Si "Remember Me" est coché, Redux Persist gérera automatiquement la persistance
-    if (!rememberMe) {
-      localStorage.removeItem('persist:auth'); // Si l'utilisateur ne souhaite pas se souvenir, on supprime les données persistées
-    }
-  };
+
+   // Fonction appelée lors de la soumission du formulaire
+   const handleSubmit = async (e) => {
+      e.preventDefault();
+    
+      const resultAction = await dispatch(login({ username, password }));
+    
+      if (login.fulfilled.match(resultAction)) {
+        const { token } = resultAction.payload;
+    
+        // Persistance selon "Remember Me"
+        if (rememberMe) {
+          localStorage.setItem('token', token); // Persistance longue
+        } else {
+          sessionStorage.setItem('token', token); // Persistance temporaire
+        }
+      }
+   };
 
    // Utilisation de useEffect pour rediriger l'utilisateur vers la page utilisateur après connexion
    useEffect(() => {
@@ -62,8 +70,10 @@ function SignUp() {
                   <input
                      type="text"
                      id="username"
+                     name="username"
                      value={username}
                      onChange={(e) => setUsername(e.target.value)} // Met à jour l'état avec la valeur saisie
+                     autoComplete="username" // Ajoute cet attribut pour que le navigateur reconnaisse le champ
                   />
                   </div>
                   <div className="input-wrapper">
@@ -71,8 +81,10 @@ function SignUp() {
                   <input
                      type="password"
                      id="password"
+                     name="password"
                      value={password}
                      onChange={(e) => setPassword(e.target.value)} // Met à jour l'état avec la valeur saisie
+                     autoComplete="current-password" // Attribut pour aider le navigateur à détecter le champ de mot de passe
                   />
                   </div>
                   <div className="input-remember">

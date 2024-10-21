@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux'; // Hooks pour interagir avec Redux
-import { login } from '../Redux/authSlice'; // Action login importée depuis le slice auth
+import { login, clearError } from '../Redux/authSlice'; // Action login et cleanError importées depuis le slice auth
 import { useNavigate } from 'react-router-dom'; // Hook pour naviguer entre les pages
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
@@ -23,6 +23,11 @@ function SignUp() {
 
    // Récupération de l'état d'authentification et des erreurs depuis le store Redux
    const { isAuthenticated, error } = useSelector((state) => state.auth);
+
+   // Réinitialiser l'erreur à chaque fois que le composant se monte
+   useEffect(() => {
+      dispatch(clearError());
+    }, [dispatch]);
 
    // Fonction appelée lors de la soumission du formulaire de connexion
    const handleSubmit = (e) => {
@@ -48,6 +53,8 @@ function SignUp() {
             <section className="sign-in-content">
                <FontAwesomeIcon icon={faUserCircle} className="sign-in-icon" />
                <h1>Sign In</h1>
+               {/* Affiche un message d'erreur si l'authentification échoue */}
+               {error && <p className="error-form">{error}</p>}
                 {/* Formulaire de connexion avec gestionnaire d'événements sur handleSubmit */}
                <form onSubmit={handleSubmit}>
                   <div className="input-wrapper">
@@ -77,8 +84,6 @@ function SignUp() {
                   />
                   <label htmlFor="remember-me">Remember me</label>
                   </div>
-                  {/* Affiche un message d'erreur si l'authentification échoue */}
-                  {error && <p>{error}</p>}
                   <button type="submit" className="sign-in-button">Sign In</button>
                </form>
             </section>

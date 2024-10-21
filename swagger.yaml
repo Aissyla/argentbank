@@ -1,0 +1,350 @@
+swagger: '2.0'
+info:
+  title: Documentation de l'API Argent Bank
+  description: Contient tous les endpoints API disponibles dans cette base de code
+  version: '2.0.0'
+  termsOfService: 'http://swagger.io/terms/'
+host: localhost:3001
+basePath: /api/v2
+schemes:
+  - http
+paths:
+  /user/login:
+    post:
+      tags:
+        - Module Utilisateur
+      summary: Connexion
+      description: API pour la connexion
+      parameters:
+        - in: body
+          name: body
+          description: Corps de la requête de connexion
+          required: true
+          schema:
+            $ref: '#/definitions/Login'
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Connexion réussie
+          schema:
+            $ref: '#/definitions/LoginResponse'
+        '400':
+          description: Champs invalides
+        '500':
+          description: Erreur interne du serveur
+  /user/signup:
+    post:
+      tags:
+        - Module Utilisateur
+      summary: Inscription
+      description: API pour l'inscription
+      parameters:
+        - in: body
+          name: body
+          description: Corps de la requête d'inscription
+          required: true
+          schema:
+            $ref: '#/definitions/User'
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Inscription réussie
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        '400':
+          description: Champs invalides
+        '500':
+          description: Erreur interne du serveur
+  /user/profile:
+    post:
+      security:
+        - Bearer: []
+      tags:
+        - Module Utilisateur
+      summary: API du Profil Utilisateur
+      description: API pour récupérer un profil utilisateur
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Profil utilisateur récupéré avec succès
+          schema:
+            $ref: '#/definitions/UserProfileResponse'
+        '400':
+          description: Champs invalides
+        '500':
+          description: Erreur interne du serveur
+    put:
+      security:
+        - Bearer: []
+      tags:
+        - Module Utilisateur
+      summary: API de mise à jour du Profil Utilisateur
+      description: API pour mettre à jour les attributs du profil utilisateur
+      parameters:
+        - in: body
+          name: body
+          description: Mise à jour du profil utilisateur
+          required: true
+          schema:
+            $ref: '#/definitions/UserProfile'
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Profil utilisateur mis à jour avec succès
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        '400':
+          description: Champs invalides
+        '500':
+          description: Erreur interne du serveur
+  /user/account:
+    post:
+      tags:
+        - Module Comptes et Transactions
+      summary: Tous les comptes
+      description: API pour récupérer tous les comptes de l'utilisateur
+      security:
+        - Bearer: []
+      responses:
+        '200':
+          description: Tous les comptes récupérés avec succès
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/AccountResponse'
+        '401':
+          description: Utilisateur non autorisé
+        '500':
+          description: Erreur interne du serveur
+  /account/{accountID}/transactions:
+    post:
+      tags:
+        - Module Comptes et Transactions
+      summary: Transactions du compte
+      description: API pour récupérer la liste des transactions associées à un compte
+      security:
+        - Bearer: []
+      parameters:
+        - in: path
+          name: accountID
+          description: ID du compte
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Toutes les transactions récupérées avec succès
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/TransactionsResponse'
+        '401':
+          description: Utilisateur non autorisé
+        '404':
+          description: Compte non trouvé
+        '500':
+          description: Erreur interne du serveur
+  /transactions/{transactionID}/category:
+    put:
+      tags:
+        - Module Comptes et Transactions
+      summary: Mettre à jour la catégorie d'une transaction
+      description: API pour mettre à jour la catégorie d'une transaction
+      security:
+        - Bearer: []
+      parameters:
+        - in: path
+          name: transactionID
+          description: ID de la transaction
+          required: true
+          type: string
+        - in: body
+          name: category
+          description: Nouvelle catégorie de la transaction
+          required: true
+          schema:
+            $ref: '#/definitions/TransactionCategory'
+      responses:
+        '200':
+          description: Catégorie de la transaction modifiée avec succès
+          schema:
+            $ref: '#/definitions/TransactionCategory'
+        '401':
+          description: Utilisateur non autorisé
+        '404':
+          description: Transaction non trouvée
+        '500':
+          description: Erreur interne du serveur
+  /transactions/{transactionID}/note:
+    post:
+      tags:
+        - Module Comptes et Transactions
+      summary: Ajouter une note à une transaction
+      description: API pour ajouter une note à une transaction
+      security:
+        - Bearer: []
+      parameters:
+        - in: path
+          name: transactionID
+          description: ID de la transaction
+          required: true
+          type: string
+        - in: body
+          name: note
+          description: Nouvelle note de la transaction
+          required: true
+          schema:
+            $ref: '#/definitions/TransactionNote'
+      responses:
+        '200':
+          description: Note ajoutée avec succès
+          schema:
+            $ref: '#/definitions/TransactionResponseNote'
+        '401':
+          description: Utilisateur non autorisé
+        '404':
+          description: Note non créée
+        '500':
+          description: Erreur interne du serveur
+  /transactions/{transactionID}/note/{noteID}:
+    put:
+      tags:
+        - Module Comptes et Transactions
+      summary: Modifier la note d'une transaction
+      description: API pour modifier une note d'une transaction
+      security:
+        - Bearer: []
+      parameters:
+        - in: path
+          name: transactionID
+          description: ID de la transaction
+          required: true
+          type: string
+        - in: path
+          name: noteID
+          description: ID de la note
+          required: true
+          type: string
+        - in: body
+          name: note
+          description: Note modifiée
+          required: true
+          schema:
+            $ref: '#/definitions/TransactionNote'
+      responses:
+        '200':
+          description: Note modifiée avec succès
+          schema:
+            $ref: '#/definitions/TransactionResponseNote'
+        '401':
+          description: Utilisateur non autorisé
+        '404':
+          description: Note non modifiée
+        '500':
+          description: Erreur interne du serveur
+    delete:
+      tags:
+        - Module Comptes et Transactions
+      summary: Supprimer la note d'une transaction
+      description: API pour supprimer une note d'une transaction
+      security:
+        - Bearer: []
+      parameters:
+        - in: path
+          name: transactionID
+          description: ID de la transaction
+          required: true
+          type: string
+        - in: path
+          name: noteID
+          description: ID de la note
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Note supprimée avec succès
+        '401':
+          description: Utilisateur non autorisé
+        '404':
+          description: Note non supprimée
+        '500':
+          description: Erreur interne du serveur
+securityDefinitions:
+  Bearer:
+    type: apiKey
+    name: Authorization
+    in: header
+definitions:
+  User:
+    properties:
+      email:
+        type: string
+        description: email de l'utilisateur
+      password:
+        type: string
+        description: mot de passe de l'utilisateur
+      firstName:
+        type: string
+        description: prénom de l'utilisateur
+      lastName:
+        type: string
+        description: nom de famille de l'utilisateur
+      userName:
+        type: string
+        description: nom public de l'utilisateur
+  Login:
+    properties:
+      email:
+        type: string
+        description: email de l'utilisateur
+      password:
+        type: string
+        description: mot de passe de l'utilisateur
+  ApiResponse:
+    type: object
+    properties:
+      status:
+        type: integer
+      message:
+        type: string
+      body:
+        type: object
+        properties:
+          id:
+            type: string
+          email:
+            type: string
+  LoginResponse:
+    type: object
+    properties:
+      token:
+        type: string
+  UserProfile:
+    type: object
+    properties:
+      userName:
+        type: string
+  UserProfileResponse:
+    type: object
+    properties:
+      userName:
+        type: string
+      email:
+        type: string
+      firstName:
+        type: string
+      lastName:
+        type: string
+  AccountResponse:
+    type: object
+    properties:
+      accountID:
+        type: string
+        description: ID du compte
+      accountName:
+        type: string
+        description: nom du compte
+      accountCurrency

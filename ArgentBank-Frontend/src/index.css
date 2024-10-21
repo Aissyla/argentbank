@@ -361,6 +361,12 @@ form div label input {
     cursor: pointer;
 }
 
+.error-form {
+    background-color: rgb(255, 58, 58);
+    color: #fff;
+    padding: 5px;
+}
+
 @media (min-width: 720px) {
     .account {
         flex-direction: row;

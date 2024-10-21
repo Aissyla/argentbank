@@ -32,6 +32,7 @@ const setTransform = createTransform(
 const persistConfig = {
   key: 'root',
   storage,
+  blacklist: ['error'], // Ne pas persister l'état de l'erreur
   whitelist: ['auth'], // Assurez-vous que seul 'auth' est dans la whitelist
   transforms: [setTransform]
 };

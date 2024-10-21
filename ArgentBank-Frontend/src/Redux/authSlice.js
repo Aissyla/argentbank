@@ -17,8 +17,14 @@ export const login = createAsyncThunk(
         lastName: userProfile.lastName || 'Unknown'
       };
     } catch (error) {
-      console.error('Erreur lors de la connexion:', error);
-      return thunkAPI.rejectWithValue('Invalid credentials or network error');
+      console.error('Erreur lors de la connexion:', error); // Affichage dans la console
+      let errorMessage = 'Identifiant ou mot de passe incorrect';
+      
+      if (error.response && error.response.status === 400) {
+        errorMessage = 'Identifiant ou mot de passe incorrect'; // Message personnalisé pour les erreurs 400
+      }
+    
+      return thunkAPI.rejectWithValue(errorMessage); // On retourne l'erreur au reducer
     }
   }
 );
@@ -41,15 +47,23 @@ const authSlice = createSlice({
         state.user.pseudo = action.payload;
       }
     },
+    clearError: (state) => { // Nouvelle action pour réinitialiser l'erreur
+      state.error = null;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(login.fulfilled, (state, action) => {
       state.isAuthenticated = true;
       state.user = action.payload;
-      state.error = null;
+      state.error = null; // Effacer l'erreur si la connexion réussit
+    })
+    .addCase(login.rejected, (state, action) => {
+      state.isAuthenticated = false;
+      state.user = null;
+      state.error = action.payload; // Enregistrer le message d'erreur retourné par rejectWithValue
     });
   },
 });
 
-export const { logout, updatePseudo } = authSlice.actions;
+export const { logout, updatePseudo, clearError } = authSlice.actions;
 export default authSlice.reducer;

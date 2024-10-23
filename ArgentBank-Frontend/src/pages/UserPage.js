@@ -1,27 +1,36 @@
-import React, { useState, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import { updatePseudo } from '../Redux/authSlice';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
-import '../index.css';
-import Nav from '../components/Nav';
-import Footer from '../components/Footer';
-import axios from 'axios'; // pour faire des requêtes HTTP
+// ----------------------------------------------------- 
+// Importation des modules nécessaires
+// -----------------------------------------------------
+import React, { useState, useEffect } from 'react'; // Importation des hooks React
+import { useSelector, useDispatch } from 'react-redux'; // Importation des hooks Redux
+import { useNavigate } from 'react-router-dom'; // Importation pour gérer la navigation
+import { updatePseudo } from '../Redux/authSlice'; // Importation de l'action pour mettre à jour le pseudo
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; // Importation pour les icônes Font Awesome
+import { faChevronRight } from '@fortawesome/free-solid-svg-icons'; // Importation d'une icône spécifique
+import '../index.css'; // Importation du fichier CSS pour le style
+import Nav from '../components/Nav'; // Importation du composant de navigation
+import Footer from '../components/Footer'; // Importation du composant de pied de page
+import axios from 'axios'; // Importation pour faire des requêtes HTTP
 
+// ----------------------------------------------------- 
+// Déclaration du composant UserPage
+// -----------------------------------------------------
 function UserPage() {
+  // Récupération des informations d'authentification depuis le store Redux
   const { isAuthenticated, user } = useSelector((state) => state.auth);
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const dispatch = useDispatch(); // Hook pour dispatch des actions Redux
+  const navigate = useNavigate(); // Hook pour la navigation
 
+  // États locaux pour gérer le mode d'édition et les informations utilisateur
   const [isEditing, setIsEditing] = useState(false);
-  // Initialise les états avec des valeurs par défaut
-  const [newPseudo, setNewPseudo] = useState('');
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
+  const [newPseudo, setNewPseudo] = useState(''); // État pour le nouveau pseudo
+  const [firstName, setFirstName] = useState(''); // État pour le prénom
+  const [lastName, setLastName] = useState(''); // État pour le nom de famille
 
+  // ----------------------------------------------------- 
+  // Effet pour vérifier l'authentification de l'utilisateur
+  // -----------------------------------------------------
   useEffect(() => {
-    // Vérifie si l'utilisateur est authentifié
     if (!isAuthenticated) {
       navigate('/SignUp'); // Redirige vers la page d'inscription si non authentifié
     } else {
@@ -32,18 +41,23 @@ function UserPage() {
       setFirstName(user ? user.firstName : ''); // Vérifie si `user` est défini
       setLastName(user ? user.lastName : ''); // Vérifie si `user` est défini
     }
-  }, [isAuthenticated, user, navigate]);
+  }, [isAuthenticated, user, navigate]); // Dépendances de l'effet
 
+  // ----------------------------------------------------- 
+  // Effet pour mettre à jour les valeurs si l'utilisateur change
+  // -----------------------------------------------------
   useEffect(() => {
-    // Met à jour les valeurs si l'utilisateur change
     if (user) {
       console.log("Pseudo actuel dans Redux :", user.pseudo); // Vérifie que le pseudo est bien mis à jour
       setNewPseudo(user.pseudo || ''); // Utilise une chaîne vide si `user.pseudo` est `undefined`
       setFirstName(user.firstName || '');
       setLastName(user.lastName || '');
     }
-  }, [user]);
+  }, [user]); // Dépendance sur l'utilisateur
 
+  // ----------------------------------------------------- 
+  // Gestion de l'annulation de l'édition
+  // -----------------------------------------------------
   const handleCancel = () => {
     // Restaure les valeurs d'origine
     setNewPseudo(user.pseudo || '');
@@ -51,8 +65,12 @@ function UserPage() {
     setLastName(user.lastName || '');
   };
 
+  // ----------------------------------------------------- 
+  // Gestion de la confirmation de la mise à jour
+  // -----------------------------------------------------
   const handleConfirm = async () => {
     try {
+      // Envoie une requête PUT pour mettre à jour le pseudo
       const response = await axios.put('http://localhost:3001/api/v1/user/profile', {
         userName: newPseudo
       }, {
@@ -70,9 +88,12 @@ function UserPage() {
     }
   };
 
+  // ----------------------------------------------------- 
+  // Rendu du composant
+  // -----------------------------------------------------
   return (
     <div>
-      <Nav/>
+      <Nav/> {/* Affiche la barre de navigation */}
       <main className="main">
         <div className="header">
           <h1>Edit user info</h1>
@@ -83,7 +104,7 @@ function UserPage() {
                 <input
                   type="text"
                   value={newPseudo}
-                  onChange={(e) => setNewPseudo(e.target.value)}
+                  onChange={(e) => setNewPseudo(e.target.value)} // Met à jour le pseudo lors de la saisie
                 />
               </label>
             </div>
@@ -93,8 +114,8 @@ function UserPage() {
                 <input
                   type="text"
                   value={firstName}
-                  disabled
-                  style={{ backgroundColor: '#e9ecef', cursor: 'not-allowed' }}
+                  disabled // Champ désactivé pour le prénom
+                  style={{ backgroundColor: '#e9ecef', cursor: 'not-allowed' }} // Style pour indiquer qu'il est désactivé
                 />
               </label>
             </div>
@@ -104,17 +125,18 @@ function UserPage() {
                 <input
                   type="text"
                   value={lastName}
-                  disabled
-                  style={{ backgroundColor: '#e9ecef', cursor: 'not-allowed' }}
+                  disabled // Champ désactivé pour le nom de famille
+                  style={{ backgroundColor: '#e9ecef', cursor: 'not-allowed' }} // Style pour indiquer qu'il est désactivé
                 />
               </label>
             </div>
             <div>
-              <button type="button" className='edit-button' onClick={handleCancel}>Cancel</button>
-              <button type="button" className='edit-button' onClick={handleConfirm}>Confirm</button>
+              <button type="button" className='edit-button' onClick={handleCancel}>Cancel</button> {/* Bouton d'annulation */}
+              <button type="button" className='edit-button' onClick={handleConfirm}>Confirm</button> {/* Bouton de confirmation */}
             </div>
           </form>
         </div>
+        {/* Sections pour afficher les informations de compte */}
         <section className="account">
           <div className="account-content-wrapper">
             <h3 className="account-title">Argent Bank Checking (x3448)</h3>
@@ -146,9 +168,9 @@ function UserPage() {
           </div>
         </section>
       </main>
-      <Footer/>
+      <Footer/> {/* Affiche le pied de page */}
     </div>
   );
 }
 
-export default UserPage;
+export default UserPage; // Exportation du composant UserPage

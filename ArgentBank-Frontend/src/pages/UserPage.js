@@ -55,6 +55,10 @@ function UserPage() {
     }
   }, [user]); // Dépendance sur l'utilisateur
 
+  const handleEditClick = () => {
+    setIsEditing(true);
+  }
+
   // ----------------------------------------------------- 
   // Gestion de l'annulation de l'édition
   // -----------------------------------------------------
@@ -63,6 +67,7 @@ function UserPage() {
     setNewPseudo(user.pseudo || '');
     setFirstName(user.firstName || '');
     setLastName(user.lastName || '');
+    setIsEditing(false); // Sort du mode édition pour afficher "Welcome back"
   };
 
   // ----------------------------------------------------- 
@@ -81,7 +86,7 @@ function UserPage() {
 
       if (response.status === 200) {
         dispatch(updatePseudo(newPseudo)); // Met à jour le pseudo dans Redux
-        setIsEditing(false);
+        setIsEditing(true);
       }
     } catch (error) {
       console.error("Erreur lors de la mise à jour du pseudonyme :", error);
@@ -96,46 +101,58 @@ function UserPage() {
       <Nav/> {/* Affiche la barre de navigation */}
       <main className="main">
         <div className="header">
-          <h1>Edit user info</h1>
-          <form>
-            <div>
-              <label>
-                User name:
-                <input
-                  type="text"
-                  value={newPseudo}
-                  onChange={(e) => setNewPseudo(e.target.value)} // Met à jour le pseudo lors de la saisie
-                />
-              </label>
-            </div>
-            <div>
-              <label>
-                First Name:
-                <input
-                  type="text"
-                  value={firstName}
-                  disabled // Champ désactivé pour le prénom
-                  style={{ backgroundColor: '#e9ecef', cursor: 'not-allowed' }} // Style pour indiquer qu'il est désactivé
-                />
-              </label>
-            </div>
-            <div>
-              <label>
-                Last Name:
-                <input
-                  type="text"
-                  value={lastName}
-                  disabled // Champ désactivé pour le nom de famille
-                  style={{ backgroundColor: '#e9ecef', cursor: 'not-allowed' }} // Style pour indiquer qu'il est désactivé
-                />
-              </label>
-            </div>
-            <div>
-              <button type="button" className='edit-button' onClick={handleCancel}>Cancel</button> {/* Bouton d'annulation */}
-              <button type="button" className='edit-button' onClick={handleConfirm}>Confirm</button> {/* Bouton de confirmation */}
-            </div>
-          </form>
+          {!isEditing && (
+            <h1>Welcome back, <br />{user.firstName} {user.lastName}!</h1>
+          )}
+          {!isEditing ? (
+            <>
+              <button className='edit-button' onClick={handleEditClick}>Edit Name</button>
+            </>
+          ) : (
+          <div>
+            <h2>Edit user info</h2>
+            <form>
+              <div>
+                <label>
+                  User name:
+                  <input
+                    type="text"
+                    value={newPseudo}
+                    onChange={(e) => setNewPseudo(e.target.value)} // Met à jour le pseudo lors de la saisie
+                  />
+                </label>
+              </div>
+              <div>
+                <label>
+                  First Name:
+                  <input
+                    type="text"
+                    value={firstName}
+                    disabled // Champ désactivé pour le prénom
+                    style={{ backgroundColor: '#e9ecef', cursor: 'not-allowed' }} // Style pour indiquer qu'il est désactivé
+                  />
+                </label>
+              </div>
+              <div>
+                <label>
+                  Last Name:
+                  <input
+                    type="text"
+                    value={lastName}
+                    disabled // Champ désactivé pour le nom de famille
+                    style={{ backgroundColor: '#e9ecef', cursor: 'not-allowed' }} // Style pour indiquer qu'il est désactivé
+                  />
+                </label>
+              </div>
+              <div>
+                <button type="button" className='edit-button' onClick={handleCancel}>Cancel</button> {/* Bouton d'annulation */}
+                <button type="button" className='edit-button' onClick={handleConfirm}>Confirm</button> {/* Bouton de confirmation */}
+              </div>
+            </form>
+          </div>
+          )}
         </div>
+        
         {/* Sections pour afficher les informations de compte */}
         <section className="account">
           <div className="account-content-wrapper">

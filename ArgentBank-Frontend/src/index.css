@@ -302,6 +302,7 @@ input[type="checkbox"]:checked::after {
     color: #fff;
     padding: 15px 40px 15px 40px;
     margin-right: 10px;
+    cursor: pointer;
 }
 
 .header {
@@ -310,6 +311,11 @@ input[type="checkbox"]:checked::after {
 }
 
 .header h1 {
+    margin-bottom: 2rem;
+    font-weight: normal;
+}
+
+.header h2 {
     margin-bottom: 2rem;
     font-weight: normal;
 }

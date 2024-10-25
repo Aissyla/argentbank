@@ -5,10 +5,9 @@ import React, { useState, useEffect } from 'react'; // Importation des hooks Rea
 import { useSelector, useDispatch } from 'react-redux'; // Importation des hooks Redux
 import { useNavigate } from 'react-router-dom'; // Importation pour gérer la navigation
 import { updatePseudo } from '../Redux/authSlice'; // Importation de l'action pour mettre à jour le pseudo
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; // Importation pour les icônes Font Awesome
-import { faChevronRight } from '@fortawesome/free-solid-svg-icons'; // Importation d'une icône spécifique
 import '../index.css'; // Importation du fichier CSS pour le style
 import Nav from '../components/Nav'; // Importation du composant de navigation
+import Account from '../components/Account'; // Importation du composant Account
 import Footer from '../components/Footer'; // Importation du composant de pied de page
 import axios from 'axios'; // Importation pour faire des requêtes HTTP
 
@@ -153,37 +152,22 @@ function UserPage() {
           )}
         </div>
         
-        {/* Sections pour afficher les informations de compte */}
-        <section className="account">
-          <div className="account-content-wrapper">
-            <h3 className="account-title">Argent Bank Checking (x3448)</h3>
-            <p className="account-amount">$48,098.43</p>
-            <p className="account-amount-description">Available Balance</p>
-          </div>
-          <div className="account-content-wrapper cta">
-            <button className="transaction-button"><FontAwesomeIcon icon={faChevronRight} /></button>
-          </div>
-        </section>
-        <section className="account">
-          <div className="account-content-wrapper">
-            <h3 className="account-title">Argent Bank Savings (x3448)</h3>
-            <p className="account-amount">$48,098.43</p>
-            <p className="account-amount-description">Available Balance</p>
-          </div>
-          <div className="account-content-wrapper cta">
-            <button className="transaction-button"><FontAwesomeIcon icon={faChevronRight} /></button>
-          </div>
-        </section>
-        <section className="account">
-          <div className="account-content-wrapper">
-            <h3 className="account-title">Argent Bank Credit Card (x3448)</h3>
-            <p className="account-amount">$48,098.43</p>
-            <p className="account-amount-description">Current Balance</p>
-          </div>
-          <div className="account-content-wrapper cta">
-            <button className="transaction-button"><FontAwesomeIcon icon={faChevronRight} /></button>
-          </div>
-        </section>
+        {/* Utilisation du composant Account avec des props spécifiques */}
+        <Account
+          title="Argent Bank Checking (x3448)"
+          amount="$48,098.43"
+          description="Available Balance"
+        />
+        <Account
+          title="Argent Bank Savings (x3448)"
+          amount="$48,098.43"
+          description="Available Balance"
+        />
+        <Account
+          title="Argent Bank Credit Card (x3448)"
+          amount="$48,098.43"
+          description="Current Balance"
+        />
       </main>
       <Footer/> {/* Affiche le pied de page */}
     </div>
